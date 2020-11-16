@@ -1,0 +1,92 @@
+﻿<link rel="stylesheet" href="/HTML and XSL Templates/bootstrap-3.3.7-dist/css/bootstrap.min.css" type="text/css"/>
+<script type="text/javascript" src="/HTML and XSL Templates/JavaScript/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/HTML and XSL Templates/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/HTML and XSL Templates/bootstrap-multiselect-0.9.13-dist/js/bootstrap-multiselect.js"></script>
+<link rel="stylesheet" href="/HTML and XSL Templates/bootstrap-multiselect-0.9.13-dist/css/bootstrap-multiselect.css" type="text/css"/>
+
+<style type="text/css">
+.btn{
+	color:#333;
+	background-color:#fff;
+	border-color:#ccc;
+}
+</style>
+<script type="text/javascript">
+$(document).ready(function() {
+	ResetRibbon();
+	formatMultiChoice("_x65b0__x53d1__x884c_ABS_x6302__");
+	formatMultiChoice("test1");
+
+	$('.multiselect').multiselect({
+		buttonClass: 'btn',
+		buttonWidth: 'auto',
+		includeSelectAllOption: true,
+		buttonText: function(options) {
+			if (options.length == 0) {
+				return '请选择';
+			}
+			else {
+				var selected = '';
+				options.each(function() {
+					selected += $(this).text() + ',';
+				});
+				return selected.substr(0, selected.length -1) ;
+			}
+		},
+		onChange: function(element, checked) {
+		var t = $(this);
+		var brands = $(this).find('option:selected');
+		var selected = [];
+		$(brands).each(function(index, brand){
+			selected.push([$(this).val()]);
+		});
+		console.log(selected);
+		}
+	});
+});
+
+
+
+
+
+
+function formatMultiChoice(colname){
+	var html = "<select class='multiselect' multiple='multiple'>";
+	$("#WebPartWPQ1 table[id^='"+colname+"'] tr").each(function(){
+		var temp = $(this).find("label").text();
+		html = html + "<option value='"+temp+"'>"+temp+"</option>";
+  	});
+  	html = html + "</select>";
+  	$("#WebPartWPQ1 table[id^='"+colname+"']").closest("td").html(html);
+}
+/*
+* Ribbon初始化不显示
+*/
+function ResetRibbon() {
+	try {
+		var ribbon = SP.Ribbon.PageManager.get_instance().get_ribbon();
+		SelectRibbonTab("Ribbon.Read", true);
+		ribbon.removeChild("Ribbon.ListForm.Display");
+		ribbon.removeChild("Ribbon.ListForm.Edit");
+	} catch (e){ }
+}
+SP.SOD.executeOrDelayUntilScriptLoaded(function () {
+	try {
+		var pm = SP.Ribbon.PageManager.get_instance();
+		pm.add_ribbonInited(function () {
+			ResetRibbon();
+		});
+		var ribbon = null;
+		try {
+			ribbon = pm.get_ribbon();
+		}catch (e) { }
+		if (!ribbon) {
+			if (typeof (_ribbonStartInit) == "function")
+			_ribbonStartInit(_ribbon.initialTabId, false, null);
+		}
+		else {
+			ResetRibbon();
+		}
+	} catch (e){ }
+}, "sp.ribbon.js");
+</script>
