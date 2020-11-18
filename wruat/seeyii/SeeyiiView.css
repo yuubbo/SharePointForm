@@ -1,0 +1,95 @@
+﻿#onetIDListForm{
+	width:100%;
+}
+#relation-link{
+	display: inline;
+}
+#relation-link .issuer-node {
+	display: inline;
+	line-height: 30px;
+	padding: 0 5px;
+}
+#relation-link .issuer-link:after {
+	color: #48A9EB;
+	border-left: 10px solid;
+	border-top: 10px solid transparent;
+	border-bottom: 10px solid transparent;
+	display: inline-block;
+	content: '';
+	position: absolute;
+	right: -10px;
+	top: 0;
+}
+#relation-link .issuer-link {
+	background-color: #48A9EB;
+	/*width: 150px; #4D81BF;*/
+	height: 20px;
+	line-height: 20px;
+	display: inline-block;
+	position: relative;
+	margin-right: 10px;
+}
+#relation-link .issuer-text {
+	color: white;
+	padding-left: 5px;
+}
+.page-variable{
+	display:none;
+}
+.row-title{
+	padding-top:20px;
+}
+.page-title{
+	font-size: 20px;
+    color: #2c9ce8;
+    font-weight: 500;
+   	line-height:25px;
+   	display:inline-block;
+}
+.ms-formlabel,.ms-formbody{
+	border: 1px solid #eee;
+	line-height: 30px;
+	padding-left: 5px;
+}
+.text-center{
+	text-align:center;
+}
+.under-line-border{
+	border-bottom:1px solid #2c9ce8;
+}
+.btn {
+    display: inline-block;
+    margin-bottom: 0;
+    min-width: 50px;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    font-size: 14px;
+    border-radius: 4px;
+    padding: 5px;
+    margin: 10px 0;
+}
+.seeyii-search{
+    color: #fff;
+    background-color: #2c9ce8;
+    border-color: #1991e2;
+}
+.seeyii-search:hover{
+	background-color: #0072c6;
+}
+.seeyii-search img{
+	display: none;
+     height: 15px;
+    animation: spin 1.5s linear infinite;
+    vertical-align: middle;
+}
+.relate-bond{
+	margin: 0 10px 0 0;
+	display:inline-block;
+}
+.enhance-back{
+	background-color:#f6fafc;
+}
