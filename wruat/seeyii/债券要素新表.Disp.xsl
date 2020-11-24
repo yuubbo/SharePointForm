@@ -1,6 +1,8 @@
 
 
 
+
+
 <xsl:stylesheet xmlns:x="http://www.w3.org/2001/XMLSchema" xmlns:dsp="http://schemas.microsoft.com/sharepoint/dsp" version="1.0" exclude-result-prefixes="xsl msxsl ddwrt" xmlns:ddwrt="http://schemas.microsoft.com/WebParts/v2/DataView/runtime" xmlns:asp="http://schemas.microsoft.com/ASPNET/20" xmlns:__designer="http://schemas.microsoft.com/WebParts/v2/DataView/designer" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:SharePoint="Microsoft.SharePoint.WebControls">
 	<xsl:output method="html" indent="no"/>
 	<xsl:decimal-format NaN=""/>
@@ -61,37 +63,39 @@
 <link rel="stylesheet" type="text/css" href="/seeyii/resource/css/SeeyiiView.css" />
 <script type="text/javascript">
 $().ready(function(){
+	// 发行日
 	$("#fxr").text(formatDateTime($("#fxr").text()));
+	// 上市日
 	$("#ssr").text(formatDateTime($("#ssr").text()));
 	
 	var zqid = $("#_x503a__x5238_id").text();
 	// Table: 债券基本信息
 	var parameters = "/_api/web/lists/getbytitle('债券基本信息')/items?$filter=_x503a__x5238_id eq "+zqid;
-	GetItemFromSeeyiiView(parameters, function(v){
+	getItemsFromSeeyiiView(parameters, function(v){
 		// 债券简称 + 债券代码
-		var zqjc = formatRestResult(v.OData__x503a__x5238__x7b80__x79f0_)+"("+formatRestResult(v.OData__x503a__x5238__x4ee3__x7801_)+")";
+		var zqjc = formatRestResult(v[0].OData__x503a__x5238__x7b80__x79f0_)+"("+formatRestResult(v[0].OData__x503a__x5238__x4ee3__x7801_)+")";
 		if (zqjc == "--(--)"){
 			$(".page-title").text("--");
 		} else{
 			$(".page-title").text(zqjc);
 		}
 		// 发行人
-		$("#foreign_fxr").text(formatRestResult(v.OData__x53d1__x884c__x4e3b__x4f53_));
+		$("#foreign_fxr").text(formatRestResult(v[0].OData__x53d1__x884c__x4e3b__x4f53_));
 		// 担保人
-		$("#forgien_dbr").text(formatRestResult(v.OData__x62c5__x4fdd__x4eba_));
+		$("#forgien_dbr").text(formatRestResult(v[0].OData__x62c5__x4fdd__x4eba_));
 		// 起息日
-		$("#foreign_qxr").text(formatDateTime(v.OData__x8d77__x606f__x65e5_));
+		$("#foreign_qxr").text(formatDateTime(v[0].OData__x8d77__x606f__x65e5_));
 		// 到期兑付日
-		$("#foreign_dqdfr").text(formatDateTime(v.OData__x5230__x671f__x65e5_));
+		$("#foreign_dqdfr").text(formatDateTime(v[0].OData__x5230__x671f__x65e5_));
 		
 		// 债券类别
-		var zqlb = formatRestResult(v.OData__x503a__x5238__x7c7b__x522b_);
+		var zqlb = formatRestResult(v[0].OData__x503a__x5238__x7c7b__x522b_);
 		if (zqlb != "--"){
 			// Table: 债券常量表
 			var para2 = "/_api/web/lists/getbytitle('债券常量表')/items?$filter=(_x5e38__x91cf__x5206__x7c7b__x7f eq 1030) and (_x6574__x578b__x503c_ eq "+zqlb+")";
-			GetItemFromSeeyiiView(para2, function(v2){
+			getItemsFromSeeyiiView(para2, function(v2){
 				// 债券类别
-				$("#foreign_zqlb").text(formatRestResult(v2.OData__x5e38__x91cf__x63cf__x8ff0_));
+				$("#foreign_zqlb").text(formatRestResult(v2[0].OData__x5e38__x91cf__x63cf__x8ff0_));
 			});
 		} else{
 			$("#foreign_zqlb").text("--");
@@ -100,34 +104,34 @@ $().ready(function(){
 
 	// Table: 可转债基本信息
 	parameters = "/_api/web/lists/getbytitle('可转债基本信息')/items?$filter=_x503a__x5238_id eq "+zqid;
-	GetItemFromSeeyiiView(parameters, function(v){
+	getItemsFromSeeyiiView(parameters, function(v){
 		// 债项评级
-		$("#foreign_zxpj").text(formatRestResult(v.OData__x503a__x5238__x4fe1__x7528__x7e));
+		$("#foreign_zxpj").text(formatRestResult(v[0].OData__x503a__x5238__x4fe1__x7528__x7e));
 	});
 	
 	// 债券多维度分类表
 	parameters = "/_api/web/lists/getbytitle('债券多维度分类表')/items?$filter=_x503a__x5238_id eq "+zqid;
-	GetItemFromSeeyiiView(parameters, function(v){
+	getItemsFromSeeyiiView(parameters, function(v){
 		// 交易所分类
-		$("#bond_nature_jysfl").text(formatBondNature("_x4ea4__x6613__x6240__x5206__x7c", v.OData__x4ea4__x6613__x6240__x5206__x7c));
+		$("#bond_nature_jysfl").text(formatBondNature("_x4ea4__x6613__x6240__x5206__x7c", v[0].OData__x4ea4__x6613__x6240__x5206__x7c));
 		// 证监会分类
-		$("#bond_nature_zjhfl").text(formatBondNature("_x8bc1__x76d1__x4f1a__x5206__x7c", v.OData__x8bc1__x76d1__x4f1a__x5206__x7c));
+		$("#bond_nature_zjhfl").text(formatBondNature("_x8bc1__x76d1__x4f1a__x5206__x7c", v[0].OData__x8bc1__x76d1__x4f1a__x5206__x7c));
 		// 交易商协会分类
-		$("#bond_nature_jysxhfl").text(formatBondNature("_x4ea4__x6613__x5546__x534f__x4f", v.OData__x4ea4__x6613__x5546__x534f__x4f));
+		$("#bond_nature_jysxhfl").text(formatBondNature("_x4ea4__x6613__x5546__x534f__x4f", v[0].OData__x4ea4__x6613__x5546__x534f__x4f));
 		// 清算所分类
-		$("#bond_nature_qssfl").text(formatBondNature("_x6e05__x7b97__x6240__x5206__x7c", v.OData__x6e05__x7b97__x6240__x5206__x7c));
+		$("#bond_nature_qssfl").text(formatBondNature("_x6e05__x7b97__x6240__x5206__x7c", v[0].OData__x6e05__x7b97__x6240__x5206__x7c));
 		// 中债登分类一级
-		$("#bond_nature_zzdflyj").text(formatBondNature("_x4e2d__x503a__x767b__x5206__x7c", v.OData__x4e2d__x503a__x767b__x5206__x7c));
+		$("#bond_nature_zzdflyj").text(formatBondNature("_x4e2d__x503a__x767b__x5206__x7c", v[0].OData__x4e2d__x503a__x767b__x5206__x7c));
 		// 中债登分类二级
-		$("#bond_nature_zzdflej").text(formatBondNature("_x4e2d__x503a__x767b__x5206__x7c0", v.OData__x4e2d__x503a__x767b__x5206__x7c0));
+		$("#bond_nature_zzdflej").text(formatBondNature("_x4e2d__x503a__x767b__x5206__x7c0", v[0].OData__x4e2d__x503a__x767b__x5206__x7c0));
 	});
 
 	// 查看发行主体关联方
 	var issuing_entity_query = {
-		fxr: "_x53d1__x884c__x4e3b__x4f53_"
+		fxr: "foreign_fxr"
 	};
 	$("#issuing_entity").click(function(){
-		var hreflink = SetButtonHref(issuing_entity_query);
+		var hreflink = setButtonHref(issuing_entity_query);
 		window.open("/seeyii/Lists/List2/AllItems.aspx" + hreflink, '_blank');
 		return false;
 	});
@@ -139,7 +143,7 @@ $().ready(function(){
 		<td id="_x503a__x5238_id"><xsl:value-of select="@_x503a__x5238_id"/></td>
 	</tr>
 	<tr>
-		<td class="under-line-border  row-title">
+		<td class="under-line-border row-title">
 			<span class="page-title"></span>
 		</td>
 	</tr>

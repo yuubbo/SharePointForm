@@ -1,4 +1,4 @@
-﻿bondNatureClassification = {
+﻿var bondNatureClassification = {
 	"_x4ea4__x6613__x6240__x5206__x7c": {
 		"1100": "国债",
 		"1101": "地方政府债",
@@ -117,9 +117,19 @@
         "2012000": "项目收益债",
         "2012001": "绿色债券"
 	}
-}
+};
 
-function GetItemFromSeeyiiView(parameters, callout){
+var RELATIONTYPEDEFINE = {
+	"A100": "股权信息",
+	"B100": "法定代表人关系",
+	"Z100": "管理关系（合伙人关系）",
+	"Y100": "合约关系",
+	"D100": "实控关系",
+	"X100": "分支机构",
+	"W100": "海外子公司"
+};
+
+function getItemsFromSeeyiiView(parameters, callout){
 	var oDataUrl = _spPageContextInfo.webAbsoluteUrl + parameters;
 	$.ajax({
 		url: oDataUrl,
@@ -130,9 +140,9 @@ function GetItemFromSeeyiiView(parameters, callout){
 		},
 		success: function(data){
 			if (data.d.results.length == 0){
-				callout({});
+				callout([""]);
 			} else {
-				callout(data.d.results[0]);
+				callout(data.d.results);
 			}
 		},
 		error: function (data, errMessage) {
@@ -169,7 +179,7 @@ function formatBondNature(key, info){
 	}
 }
 
-function SetButtonHref(query){
+function setButtonHref(query){
 	var hreflink = "";
 	$.each(query, function(key, value){
 		var q = $("#" + value).text();
@@ -181,6 +191,33 @@ function SetButtonHref(query){
 	});
 	return hreflink;
 }
+
+function parseRelationLink(sourceVal){
+	var result = "<div id='relation-link'>";
+	var obj = jQuery.parseJSON($("<div/>").html(sourceVal).text());
+	$.each(obj[0], function(i, item) {
+		if (item.hasOwnProperty("name")) {
+			result = result + "<div class='issuer-node'>"+item["name"]+"</div>";
+		} else if (item.hasOwnProperty("equity_ratio")) {
+			var rate = item["equity_ratio"] + '%';
+				result = result + "<div class='issuer-link'><span class='issuer-text'>"+RELATIONTYPEDEFINE[item["type"][0]]+": " + rate + "</span></div>";
+		}
+	});
+	result = result + "</div>";
+	return result;
+}
+
+function formatRestResultsToHrefLinks(v, baseUrl, colname){
+	if (v.length == 0) return "--";
+	var result = "";
+	$.each(v, function(i, item){
+		var t = item["ID"];
+		var temp = "<a class='relate-bond' href='"+baseUrl+"?id="+item["ID"]+"'>"+item["OData_" + colname]+"</a>";
+		result = result + temp;
+	});
+	return result;
+}
+
 
 /*
 * Ribbon初始化不显示	

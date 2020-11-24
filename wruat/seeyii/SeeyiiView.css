@@ -46,6 +46,10 @@
    	line-height:25px;
    	display:inline-block;
 }
+.page-title-notice{
+	float:right;
+	text-align:right;
+}
 .ms-formlabel,.ms-formbody{
 	border: 1px solid #eee;
 	line-height: 30px;
