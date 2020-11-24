@@ -1,0 +1,79 @@
+﻿<style type="text/css">
+.dHolder{
+	margin: 0px;
+	padding: 0px;
+	width: 300px;
+	background-color:#50596E;
+}
+.head{
+	margin: 0px;
+	padding: 0px;
+	width: 15px;
+	height: 15px;
+	float: right;
+}
+.head img{
+	height:15px;
+	width:15px;
+	cursor:pointer;
+}
+
+#musicEmbed audio {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	height: 30px;
+	width:300px;
+}
+#Ribbon\.Documents\.Copies-LargeMedium-0
+{
+    display:none;
+}
+</style>
+
+<div class="dHolder">
+	<div class="head" >
+	</div>
+	<div id="musicEmbed"></div>
+</div>
+
+<script type="text/javascript" language="javascript">
+$(".dHolder").hide();
+function playMusic(id){
+	var musicUrl=$("#"+id).attr('musicUrl');
+	var userAgent=navigator.userAgent;
+	
+	if(userAgent.indexOf("MSIE")>-1){
+		var musicPlayer = "<embed src='" + musicUrl + "' height='40' width='300' align='bottom'/>";
+		$("#musicEmbed").html(musicPlayer);
+	}
+	else if(userAgent.indexOf("Chrome")>-1){
+		var musicPlayer = "<audio οncοntextmenu='return false' controlsList='nodownload' src='" + musicUrl + "' autoplay='autoplay' controls='controls'> </audio>";
+		$("#musicEmbed").html(musicPlayer);
+	}
+	else{
+		var musicPlayer = "<audio οncοntextmenu='return false' controlsList='nodownload' src='" + musicUrl + "' autoplay='autoplay'> </audio>";
+		$("#musicEmbed").html(musicPlayer);
+	}
+
+	$(".dHolder").show();
+}
+
+function clock(){
+	var i = 0;
+	$(".ms-vb2 a").each(function(){
+		var musicUrl = $(this).attr('href');
+		if(musicUrl.substring(musicUrl.length-4).toLowerCase()==".mp3"||musicUrl.substring(musicUrl.length-4).toLowerCase()==".wmv"||musicUrl.substring(musicUrl.length-4).toLowerCase()==".wma"){
+			i++;
+			$(this).attr('id','music'+i);
+			$(this).attr('musicUrl',musicUrl);
+			$(this).removeAttr('onclick');
+			$(this).attr('href','javascript:playMusic("music'+i+'")');
+			//console.log(musicUrl);
+		}
+	});
+}
+
+$(document).ready(function(){
+	self.setInterval("clock()", 1000);
+});
+</script>
